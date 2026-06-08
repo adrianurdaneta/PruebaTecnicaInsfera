@@ -28,11 +28,16 @@ INSERT INTO media_genres (media_id, genre_id) VALUES (5, 1), (5, 5);
 -- Glass Onion (Comedy, Thriller)
 INSERT INTO media_genres (media_id, genre_id) VALUES (6, 4), (6, 5);
 
--- 4. Insertar Usuarios Semilla (Para testing)
--- user1: password123 | admin: admin123 
--- Las contraseñas están hasheadas con BCrypt
--- Nota: Para facilitar el arranque en entornos locales, las contraseñas aquí se dejan
--- en texto plano y la aplicación detectará y las hasheará al arrancar (solo en Development).
-INSERT INTO users (username, password_hash) VALUES 
-('user1', 'password123'), 
-('admin', 'admin123'); 
+-- 4. Insert Seed Users (For testing)
+-- IMPORTANT: Passwords must be hashed with BCrypt before inserting
+-- Option 1: Use the /api/auth/register endpoint to create users with properly hashed passwords
+-- Option 2: Generate hashes manually and insert them here
+--
+-- For initial testing, you can register users via the API:
+-- POST /api/auth/register { "username": "user1", "password": "password123" }
+-- POST /api/auth/register { "username": "admin", "password": "admin123" }
+--
+-- Alternatively, if you need to seed users directly, uncomment and use valid BCrypt hashes:
+-- INSERT INTO users (username, password_hash) VALUES 
+-- ('user1', 'REPLACE_WITH_BCRYPT_HASH_OF_password123'), 
+-- ('admin', 'REPLACE_WITH_BCRYPT_HASH_OF_admin123');

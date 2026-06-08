@@ -11,7 +11,7 @@ namespace WatchlistAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // Todos los endpoints de listas requieren autenticación JWT
+    [Authorize] // All watchlist endpoints require JWT authentication
     public class WatchlistController : ControllerBase
     {
         private readonly WatchlistDbContext _context;
@@ -23,7 +23,7 @@ namespace WatchlistAPI.Controllers
             _dbConnection = dbConnection;
         }
 
-        // 3b. Actualizar nombre/description de una Watchlist
+        // Update watchlist name and description
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateWatchlist(int id, [FromBody] CreateWatchlistDto request)
         {
@@ -40,7 +40,7 @@ namespace WatchlistAPI.Controllers
             return Ok(new { Message = "Watchlist updated successfully.", watchlist.Id, watchlist.Name, watchlist.Description });
         }
 
-        // 1. Obtener todas las Watchlists del usuario logueado con sus items (Dapper para lectura)
+        // Get all watchlists for the logged-in user with their items (using Dapper for read)
         [HttpGet]
         public async Task<IActionResult> GetUserWatchlists()
         {
@@ -93,7 +93,7 @@ namespace WatchlistAPI.Controllers
             return Ok(watchlistDict.Values);
         }
 
-        // 2. Crear una nueva Watchlist (EF Core para escritura)
+        // Create a new watchlist (using EF Core for write)
         [HttpPost]
         public async Task<IActionResult> CreateWatchlist([FromBody] CreateWatchlistDto request)
         {
@@ -113,7 +113,7 @@ namespace WatchlistAPI.Controllers
             return CreatedAtAction(nameof(GetUserWatchlists), new { id = watchlist.Id }, new { watchlist.Id, watchlist.Name, watchlist.Description });
         }
 
-        // 3. Eliminar una Watchlist (EF Core para escritura/borrado)
+        // Delete a watchlist (using EF Core for write/delete)
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWatchlist(int id)
         {
@@ -129,18 +129,18 @@ namespace WatchlistAPI.Controllers
             return Ok(new { Message = "Watchlist deleted successfully." });
         }
 
-        // 4. Añadir una película/serie a una Watchlist (EF Core para escritura)
+        // Add a movie/series to a watchlist (using EF Core for write)
         [HttpPost("{id}/items")]
         public async Task<IActionResult> AddItemToWatchlist(int id, [FromBody] AddPlaylistItemDto request)
         {
             var userId = GetUserId();
 
-            // Verificar que la lista pertenece al usuario
+            // Verify that the watchlist belongs to the user
             var watchlistExists = await _context.Watchlists.AnyAsync(w => w.Id == id && w.UserId == userId);
             if (!watchlistExists)
                 return NotFound(new { Message = "Watchlist not found or unauthorized." });
 
-            // Verificar si ya existe el elemento en la lista
+            // Check if the item already exists in the list
             var alreadyInList = await _context.WatchlistItems
                 .AnyAsync(wi => wi.WatchlistId == id && wi.MediaId == request.MediaId);
 
@@ -160,13 +160,13 @@ namespace WatchlistAPI.Controllers
             return Ok(new { Message = "Content added to watchlist successfully." });
         }
 
-        // 5. Eliminar una película/serie de una Watchlist (EF Core para escritura)
+        // Remove a movie/series from a watchlist (using EF Core for write)
         [HttpDelete("{id}/items/{mediaId}")]
         public async Task<IActionResult> RemoveItemFromWatchlist(int id, int mediaId)
         {
             var userId = GetUserId();
 
-            // Verificar que la lista pertenece al usuario
+            // Verify that the watchlist belongs to the user
             var watchlistExists = await _context.Watchlists.AnyAsync(w => w.Id == id && w.UserId == userId);
             if (!watchlistExists)
                 return NotFound(new { Message = "Watchlist not found or unauthorized." });

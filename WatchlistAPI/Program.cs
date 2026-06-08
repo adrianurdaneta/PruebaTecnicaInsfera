@@ -11,17 +11,17 @@ using WatchlistAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Configurar Entity Framework Core (Para Escrituras y Auth)
+// 1. Configure Entity Framework Core (for Write operations and Auth)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<WatchlistDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 25))));
 
-// 2. Configurar Dapper y SqlKata (Para Lecturas Rápidas)
+// 2. Configure Dapper and SqlKata (for Fast Read operations)
 builder.Services.AddScoped<IDbConnection>(_ => new MySqlConnection(connectionString));
 builder.Services.AddSingleton<Compiler, MySqlCompiler>();
 builder.Services.AddScoped<IMediaReadService, MediaReadService>();
 
-// 3. Configurar Autenticación con JWT
+// 3. Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]!);
 
@@ -49,11 +49,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configurar CORS para el Frontend local
+// Configure CORS for local Frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:5173") // Puerto típico de Vite
+        policy => policy.WithOrigins("http://localhost:5173") // Vite default port
                         .AllowAnyMethod()
                         .AllowAnyHeader());
 });

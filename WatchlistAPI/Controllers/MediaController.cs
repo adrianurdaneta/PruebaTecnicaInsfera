@@ -6,7 +6,7 @@ namespace WatchlistAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // Proteger endpoints de catálogo de películas con JWT
+    [Authorize] // Protect media catalog endpoints with JWT
     public class MediaController : ControllerBase
     {
         private readonly IMediaReadService _mediaReadService;

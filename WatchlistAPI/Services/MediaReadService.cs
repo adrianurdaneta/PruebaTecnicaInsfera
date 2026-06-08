@@ -26,11 +26,11 @@ namespace WatchlistAPI.Services
 
         public async Task<IEnumerable<MediaItemDto>> GetMediaItemsAsync(string? search, string? type, string? genre, int? year)
         {
-            // 1. Construir la consulta base con SqlKata
+            // 1. Build base query with SqlKata
             var query = new Query("media_items as m")
                 .Select("m.id", "m.title", "m.type", "m.release_year as ReleaseYear", "m.director", "m.synopsis", "m.poster_url as PosterUrl", "m.rating", "m.duration");
 
-            // Filtrar por género si se proporciona (requiere JOIN)
+            // Filter by genre if provided (requires JOIN)
             if (!string.IsNullOrWhiteSpace(genre))
             {
                 query = query.Join("media_genres as mg", "m.id", "mg.media_id")
@@ -38,34 +38,34 @@ namespace WatchlistAPI.Services
                              .Where("g.name", genre);
             }
 
-            // Filtrar por búsqueda de texto en título
+            // Filter by text search in title
             if (!string.IsNullOrWhiteSpace(search))
             {
                 query = query.WhereLike("m.title", $"%{search}%");
             }
 
-            // Filtrar por tipo (Movie/Series)
+            // Filter by type (Movie/Series)
             if (!string.IsNullOrWhiteSpace(type))
             {
                 query = query.Where("m.type", type);
             }
 
-            // Filtrar por año
+            // Filter by year
             if (year.HasValue)
             {
                 query = query.Where("m.release_year", year.Value);
             }
 
-            // Compilar consulta y ejecutar con Dapper
+            // Compile query and execute with Dapper
             var compiled = _compiler.Compile(query);
-            // Asegurarnos de abrir la conexión solo si no está abierta (para implementaciones de IDbConnection que lo requieren)
+            // Ensure connection is open only if not already open (for IDbConnection implementations that require it)
             if (_dbConnection is System.Data.Common.DbConnection conn && conn.State != System.Data.ConnectionState.Open)
             {
                 await conn.OpenAsync();
             }
             var items = (await _dbConnection.QueryAsync<MediaItemDto>(compiled.Sql, compiled.NamedBindings)).ToList();
 
-            // 2. Si hay películas encontradas, cargar sus géneros asociados de forma eficiente
+            // 2. If movies are found, load their associated genres efficiently
             if (items.Any())
             {
                 var itemIds = items.Select(i => i.Id).ToList();
@@ -82,7 +82,7 @@ namespace WatchlistAPI.Services
                 }
                 var genreMappings = await _dbConnection.QueryAsync<dynamic>(compiledGenres.Sql, compiledGenres.NamedBindings);
 
-                // Agrupar géneros por ID de elemento multimedia
+                // Group genres by media item ID
                 var genreDict = new Dictionary<int, List<string>>();
                 foreach (var row in genreMappings)
                 {
@@ -96,7 +96,7 @@ namespace WatchlistAPI.Services
                     genreDict[mediaId].Add(genreName);
                 }
 
-                // Asignar géneros a la lista de DTOs final
+                // Assign genres to the final DTO list
                 foreach (var item in items)
                 {
                     if (genreDict.TryGetValue(item.Id, out var genresList))
