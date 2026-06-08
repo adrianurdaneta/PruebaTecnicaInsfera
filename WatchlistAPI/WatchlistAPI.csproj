@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>a429f881-077d-453d-98ef-28024de70746</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +25,10 @@
     <PackageReference Include="SqlKata" Version="4.0.1" />
     <PackageReference Include="SqlKata.Execution" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
 
 </Project>

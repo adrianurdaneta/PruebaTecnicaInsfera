@@ -363,3 +363,26 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+##
+## Custom rules for WatchlistAPI project
+##
+
+# Protect sensitive configuration files
+appsettings.json
+appsettings.*.json
+!appsettings.Development.json
+!appsettings.Example.json
+
+# User Secrets
+secrets.json
+
+# React / Vite frontend
+watchlist-front/dist/
+watchlist-front/.vite/
+watchlist-front/node_modules/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
