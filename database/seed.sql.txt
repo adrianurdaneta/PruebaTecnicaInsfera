@@ -1,0 +1,38 @@
+-- seed.sql (copia renombrada a .txt)
+USE netflix;
+
+-- 1. Insertar Géneros
+INSERT INTO genres (name) VALUES 
+('Sci-Fi'), ('Drama'), ('Action'), ('Comedy'), ('Thriller'), ('Fantasy'), ('Horror');
+
+-- 2. Insertar Películas y Series (Media Items)
+INSERT INTO media_items (title, type, release_year, director, synopsis, poster_url, rating, duration) VALUES 
+('Stranger Things', 'Series', 2016, 'The Duffer Brothers', 'Un grupo de niños en Hawkins, Indiana, descubre un misterio aterrador que involucra experimentos secretos y fuerzas sobrenaturales.', 'https://image.tmdb.org/t/p/w600_and_h900_bestv2/u6bCgS0mOun6q2vGjP2Ew1aA9l.jpg', 8.6, '4 Seasons'),
+('Inception', 'Movie', 2010, 'Christopher Nolan', 'Un ladrón que roba secretos corporativos a través del uso de la tecnología de compartir sueños tiene la tarea de plantar una idea en la mente de un CEO.', 'https://image.tmdb.org/t/p/w600_and_h900_bestv2/edv5CZvWj09upOsy2Y6IwObsVNl.jpg', 8.8, '148 min'),
+('Breaking Bad', 'Series', 2008, 'Vince Gilligan', 'Un profesor de química de secundaria diagnosticado con cáncer de pulmón inoperable recurre a la fabricación y venta de metanfetamina para asegurar el futuro de su familia.', 'https://image.tmdb.org/t/p/w600_and_h900_bestv2/ggFHVNu6YYI5L9pCfOacjizwpGK.jpg', 9.5, '5 Seasons'),
+('The Dark Knight', 'Movie', 2008, 'Christopher Nolan', 'Cuando la amenaza conocida como el Joker emerge de su misterioso pasado, causa estragos y caos en las personas de Gotham.', 'https://image.tmdb.org/t/p/w600_and_h900_bestv2/qJ2tW6WMUDux911r6m7haRef0WH.jpg', 9.0, '152 min'),
+('Dark', 'Series', 2017, 'Baran bo Odar', 'Una saga familiar con un giro sobrenatural, ambientada en un pueblo alemán, donde la desaparición de dos niños pequeños expone las relaciones rotas entre cuatro familias.', 'https://image.tmdb.org/t/p/w600_and_h900_bestv2/oKItzQ1kH1T6lYqSGEB8G6XUo4Y.jpg', 8.7, '3 Seasons'),
+('Glass Onion: A Knives Out Mystery', 'Movie', 2022, 'Rian Johnson', 'El famoso detective sureño Benoit Blanc viaja a Grecia para su último caso.', 'https://image.tmdb.org/t/p/w600_and_h900_bestv2/vDGr1YdrlfbU9wxTOdpf3zChmv9.jpg', 7.1, '139 min');
+
+-- 3. Asociar Géneros a Media Items (Media_Genres)
+-- Stranger Things (Sci-Fi, Drama)
+INSERT INTO media_genres (media_id, genre_id) VALUES (1, 1), (1, 2);
+-- Inception (Sci-Fi, Action)
+INSERT INTO media_genres (media_id, genre_id) VALUES (2, 1), (2, 3);
+-- Breaking Bad (Drama, Thriller)
+INSERT INTO media_genres (media_id, genre_id) VALUES (3, 2), (3, 5);
+-- The Dark Knight (Action, Drama)
+INSERT INTO media_genres (media_id, genre_id) VALUES (4, 3), (4, 2);
+-- Dark (Sci-Fi, Thriller)
+INSERT INTO media_genres (media_id, genre_id) VALUES (5, 1), (5, 5);
+-- Glass Onion (Comedy, Thriller)
+INSERT INTO media_genres (media_id, genre_id) VALUES (6, 4), (6, 5);
+
+-- 4. Insertar Usuarios Semilla (Para testing)
+-- user1: password123 | admin: admin123 
+-- Las contraseñas están hasheadas con BCrypt
+-- Nota: Para facilitar el arranque en entornos locales, las contraseñas aquí se dejan
+-- en texto plano y la aplicación detectará y las hasheará al arrancar (solo en Development).
+INSERT INTO users (username, password_hash) VALUES 
+('user1', 'password123'), 
+('admin', 'admin123'); 

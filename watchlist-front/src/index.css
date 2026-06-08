@@ -1,0 +1,239 @@
+/* index.css */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --netflix-black: #141414;
+  --netflix-dark-gray: #181818;
+  --netflix-red: #E50914;
+  --netflix-red-hover: #b80710;
+  --netflix-light: #F5F5F1;
+  --netflix-gray: #808080;
+  
+  --body-bg: var(--netflix-black);
+  --body-color: var(--netflix-light);
+  
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--body-bg);
+  color: var(--body-color);
+}
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+body {
+  background-color: var(--netflix-black) !important;
+  color: var(--netflix-light) !important;
+  overflow-x: hidden;
+}
+
+/* Translucent Premium Navbar */
+.netflix-navbar {
+  background-color: rgba(20, 20, 20, 0.95) !important;
+  backdrop-filter: blur(10px);
+  transition: background-color 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--netflix-red) !important;
+  letter-spacing: 1px;
+}
+
+.nav-link {
+  color: #e5e5e5 !important;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #ffffff !important;
+}
+
+/* Premium Netflix-style Media Card */
+.media-card {
+  background-color: var(--netflix-dark-gray) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.media-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+  border-color: rgba(229, 9, 20, 0.4) !important;
+}
+
+.media-card .card-img-wrapper {
+  position: relative;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+}
+
+.media-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.media-card:hover img {
+  transform: scale(1.05);
+}
+
+.media-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(20, 20, 20, 0.75);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.media-card-body {
+  padding: 12px;
+  background: linear-gradient(to top, rgba(20, 20, 20, 0.95) 0%, rgba(24, 24, 24, 0.8) 100%);
+}
+
+.media-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+/* Override Bootstrap Buttons */
+.btn-primary {
+  background-color: var(--netflix-red) !important;
+  border-color: var(--netflix-red) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--netflix-red-hover) !important;
+  border-color: var(--netflix-red-hover) !important;
+  transform: scale(1.02);
+}
+
+.btn-outline-primary {
+  color: var(--netflix-red) !important;
+  border-color: var(--netflix-red) !important;
+  font-weight: 600 !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--netflix-red) !important;
+  color: #fff !important;
+}
+
+/* Glassmorphic Modals matching dark theme */
+.modal-content {
+  background-color: #1c1c1c !important;
+  color: var(--netflix-light) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.btn-close-white {
+  filter: invert(1) grayscale(1) brightness(2);
+}
+
+/* Customized scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--netflix-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Login Page Styles */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://assets.nflxext.com/ffe/siteui/vlv3/5e13e173-a506-42c0-9c7b-27a31f6aefd8/web/ES-es-20240102-popsignuptwoweeks-perspective_alpha_website_large.jpg') no-repeat center center/cover;
+}
+
+.login-card {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  border-radius: 8px !important;
+  padding: 40px !important;
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid rgba(255,255,255,0.05) !important;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+}
+
+.form-control {
+  background-color: #333 !important;
+  border: 1px solid #333 !important;
+  color: #fff !important;
+  padding: 12px !important;
+}
+
+.form-control:focus {
+  background-color: #454545 !important;
+  border-color: #555 !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+
+.form-label {
+  color: #8c8c8c;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* Watchlist Side Panel */
+.watchlist-panel {
+  background-color: var(--netflix-dark-gray);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 16px;
+  height: 100%;
+}

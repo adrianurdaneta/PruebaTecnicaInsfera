@@ -1,0 +1,61 @@
+-- schema.sql (copia renombrada a .txt)
+-- Creación de la base de datos
+CREATE DATABASE IF NOT EXISTS netflix CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE netflix;
+
+-- 1. Tabla de Usuarios
+CREATE TABLE IF NOT EXISTS users (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(50) UNIQUE NOT NULL,
+	password_hash VARCHAR(255) NOT NULL,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Tabla de Listas de Seguimiento (Watchlists)
+CREATE TABLE IF NOT EXISTS watchlists (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	user_id INT NOT NULL,
+	name VARCHAR(100) NOT NULL,
+	description VARCHAR(255),
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- 3. Tabla de Películas/Series (Media Items)
+CREATE TABLE IF NOT EXISTS media_items (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(150) NOT NULL,
+	type ENUM('Movie', 'Series') NOT NULL,
+	release_year INT NOT NULL,
+	director VARCHAR(100) NOT NULL,
+	synopsis TEXT NOT NULL,
+	poster_url VARCHAR(2083) NOT NULL,
+	rating DECIMAL(3, 1) NOT NULL,
+	duration VARCHAR(50) NOT NULL,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. Tabla de Géneros
+CREATE TABLE IF NOT EXISTS genres (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- 5. Tabla Intermedia: Media <-> Géneros (Relación Muchos a Muchos)
+CREATE TABLE IF NOT EXISTS media_genres (
+	media_id INT NOT NULL,
+	genre_id INT NOT NULL,
+	PRIMARY KEY (media_id, genre_id),
+	FOREIGN KEY (media_id) REFERENCES media_items(id) ON DELETE CASCADE,
+	FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE CASCADE
+);
+
+-- 6. Tabla Intermedia: Watchlists <-> Media (Items dentro de una lista)
+CREATE TABLE IF NOT EXISTS watchlist_items (
+	watchlist_id INT NOT NULL,
+	media_id INT NOT NULL,
+	added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (watchlist_id, media_id),
+	FOREIGN KEY (watchlist_id) REFERENCES watchlists(id) ON DELETE CASCADE,
+	FOREIGN KEY (media_id) REFERENCES media_items(id) ON DELETE CASCADE
+);
